@@ -1,0 +1,51 @@
+map:
+
+utilisé quand déséquilibrage à droite
+
+node_ptr	left_rotate(node_ptr n)
+
+node_ptr	r = n->right;
+node_ptr	rl = r->left;
+
+			|n|				//node que l'on envoie
+					|r|		//sa droite immédiate que l'on va rotate avec na
+				|rl|	|rr|
+
+r->left = n;			//r passe parent de n, n passe à gauche de r
+n->right = rl;			// si rl, alors rl se situe à droite de n
+
+// ces deux lignes permettent de recalculer la profondeur, l'ordre est important,
+// r est dépendant de la depth de n
+n->depth = calc_depth(n->left, n->right) + 1;
+r->depth = calc_depth(r->left, r->right) + 1;
+
+r->parent = n->parent;
+n->parent = r;
+					|r|			//r est devenu parent
+			|n|				|rr|	// n est bien passé à gauche de r et rr est toujours à droite de r
+				|rl|			
+
+
+node_ptr	right_rotate(node_ptr n) //déséquilibrage à gauche
+
+	node_ptr	l = n->left;
+	node_ptr	lr = l->right;
+
+						|n|			//node envoyée en arguement
+				|l|					//gauche immédiate de notre node, qui va être rotate
+			|ll|	|lr|			
+
+l->right = n;						// n goes to the right of l
+n->left = lr;						// n now takes to his left lr
+
+// same things than the right version, recalculate the depth, left depth needs n depth
+// to be recalculate before recalculating himself
+n->depth = calc_depth(n->left, n->right) + 1;
+l->depth = calc_depth(l->left, l->right) + 1;
+
+l->parent = n->parent;				// l takes n parent
+n->parent = l;						// l become n parent
+
+				|l|			
+		|ll|			|n|					
+					|lr|	
