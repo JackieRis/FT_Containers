@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:17:35 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/25 07:23:46 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2022/10/27 10:31:24 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define VECTOR_HPP
 
 # include <memory>
-# include <iostream>
 # include <limits.h>
 # include <stdexcept>
 # include "iterator.hpp"
@@ -44,7 +43,7 @@ namespace   ft
         T		*_array;
         size_t	_cap;
 		size_t	_last;
-	
+
 		void	newalloc(size_t n)
 		{
 			T	*tmp =  a.allocate(n);
@@ -62,7 +61,7 @@ namespace   ft
 		void	moveArray(iterator position)
 		{
 			iterator	it = end();
-			for (; it > position; it--)
+			for (; it > position; --it)
 				*it = *(it - 1);
 			_last += 1;
 		}
@@ -70,8 +69,10 @@ namespace   ft
 		{
 			iterator	it = end() + (n - 1);
 			
-			for (; it > position; it--)
+			for (; it > position; --it)
+			{
 				*it = *(it - n);
+			}
 			_last += n;
 		}
 		void	revMoveArray(iterator position)
@@ -98,10 +99,10 @@ namespace   ft
             for (size_t i = 0; i < n; i++)
         		a.construct(&_array[i], val);
         }
-        vector(const vector& from):a(from.a), _array(a.allocate(from._last)), _cap(from._cap), _last(from._last)
+        vector(const vector& from):a(from.a), _array(a.allocate(from._last)), _cap(from._last), _last(from._last)
 		{
 			for (size_t i = 0; i < _last; i++)
-				_array[i] = from._array[i];
+				a.construct(&_array[i], from._array[i]);
 		}
 		template<class inputIt>
 		vector(typename enable_if<!is_integral<inputIt>::value,inputIt>::type first, inputIt last, const allocator_type& alloc = allocator_type()): a(alloc)
@@ -109,12 +110,13 @@ namespace   ft
 			size_t n = ft::distance(first, last);
 			_array = a.allocate(n);
 			_cap = n;
+			_last = 0;
 			for (; first != last; ++first)
 				push_back(*first);
 		}
         ~vector()
 		{
-			for (size_t i = 0;i < _cap; i++)
+			for (size_t i = 0;i < _last; i++)
 				a.destroy(&_array[i]);
 			
 			a.deallocate(_array, _cap);
@@ -131,7 +133,7 @@ namespace   ft
 				else
 					newalloc(_cap * 2);
 			}
-			_array[_last] = val;
+			a.construct(&_array[_last], val);
 			_last++;
 		}
 		void	pop_back()
@@ -272,27 +274,27 @@ namespace   ft
 				newalloc(_cap * 2);
 			iterator	it(_array + tmp);
 			moveArray(it);
-			*it = val;
+			a.construct(&*it, val);
 			return (it);
 		}
-		iterator	insert(iterator position, size_type n, const value_type& val)
+		void	insert(iterator position, size_type n, const value_type& val)
 		{
 			size_t tmp = ft::distance(begin(), position);
-			if (position == end() - 1)
+			if (position == end())
 			{
 				if (_cap <= (_last + n - 1))
 					newalloc(_cap + n);
 				for (size_t i = 0; i < n; i++)
 					push_back(val);
-				return (end() - n);
+				return ;
 			}
 			if (_cap < _last + n)
 				newalloc(_cap + n);
 			iterator	it(begin() + tmp);
 			moveArray(it, n);
 			for (iterator it2(it); it2 < it + n; ++it2)
-				*it2 = val;
-			return (it);
+				a.construct(&*it2, val);
+			return ;
 		}
 		template<class inputIterator>
 		void	insert(	iterator position,
@@ -301,23 +303,23 @@ namespace   ft
 		{
 			size_t tmp = ft::distance(begin(), position);
 			size_t dist = ft::distance(first, last);
-			if (position == end() - 1)
-			{
-				if (_cap < (_last + dist))
-					newalloc(_cap + dist);
-				iterator it(begin() + tmp);
-				for (; first != last; ++first)
-					*it = *first;
-				_last += dist;
+			if (_cap < _last + dist)
+				newalloc(_cap + dist);
+			iterator	it(begin() + tmp);
+			moveArray(it, dist);
+			for (; first != last; ++first)
+			{	
+				a.construct(&*it, *first);
+				++it;
 			}
 		}
 		iterator	erase(iterator position)
 		{
 			size_t tmp = ft::distance(begin(), position);
-			if (position == end() - 1)
+			if (position == end())
 			{
-				a.destroy(&_array[_last]);
 				_last -= 1;
+				a.destroy(&_array[_last]);
 				return (end());
 			}
 			a.destroy(&_array[tmp]);
@@ -329,7 +331,7 @@ namespace   ft
 			size_t	tmp = ft::distance(begin(), first);
 			size_t	n = ft::distance(first, last);
 			
-			if (last == end() - 1)
+			if (last == end())
 			{
 				for (size_t i = tmp; i < _last; i++)
 					a.destroy(&_array[i]);

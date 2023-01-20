@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 00:57:26 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/25 06:46:21 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2022/10/27 04:56:14 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ namespace ft
 			return (*this);
 		}
 
-		iterator_type	base()const
+		iterator_type	base() const
 		{
 			return (_current);
 		}
 
-		reference	operator*()
+		reference	operator*() const
 		{
 			iterator_type tmp = _current;
 			return (*--tmp);
 		}
-		pointer	operator->()
+		pointer	operator->() const
 		{
 			reference ref = operator*();
 			return (&ref);

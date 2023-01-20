@@ -6,14 +6,13 @@
 /*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 15:47:14 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/25 06:51:23 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2022/10/27 01:08:20 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
 
-# include "vector.hpp"
 # include <iterator>
 
 namespace ft

@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 05:01:58 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/18 05:45:13 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2022/10/26 23:39:23 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft
 	class stack
 	{
 		public:
-	typename Container							container_type;
+	typedef Containers							container_type;
 	typedef typename container_type::value_type	value_type;
 	typedef typename container_type::size_type	size_type;
 	
@@ -30,10 +30,9 @@ namespace ft
 	container_type	c;
 		
 		public:
-	stack(/* args */);
-	explicit stack(const Container &cont = Container()):c(cont){}
+	explicit stack(const Containers &cont = Containers()):c(cont){}
 	stack(const stack& from):c(from.c){}
-	~stack();
+	~stack() {}
 
 	stack& operator=(const stack& from)
 	{
@@ -50,11 +49,12 @@ namespace ft
 	bool	empty()const{return (c.empty());}
 	size_type	size(){return (c.size());}
 
-	template<class T, class C>
-	friend bool	operator==(const stack<T, C> &l, const stack<T, C> &r);
-	template<class T, class C>
-	friend bool	operator<(const stack<T, C> &l, const stack<T, C> &r);
+	template<class Type, class C>
+	friend bool	operator==(const stack<Type, C> &l, const stack<Type, C> &r);
+	template<class Type, class C>
+	friend bool	operator<(const stack<Type, C> &l, const stack<Type, C> &r);
 	};
+	
 	template<class T, class C>
 	bool	operator==(const stack<T, C> &l, const stack<T, C> &r)
 	{
@@ -63,7 +63,7 @@ namespace ft
 	template<class T, class C>
 	bool	operator!=(const stack<T, C> &l, const stack<T, C> &r)
 	{
-		return (!(l.c == r.c));
+		return (!(l == r));
 	}
 	template<class T, class C>
 	bool	operator<(const stack<T, C> &l, const stack<T, C> &r)
@@ -83,7 +83,7 @@ namespace ft
 	template<class T, class C>
 	bool	operator>=(const stack<T, C> &l, const stack<T, C> &r)
 	{
-		return (!(l < c));
+		return (!(l < r));
 	}
 }
 

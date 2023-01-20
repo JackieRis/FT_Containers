@@ -6,18 +6,36 @@
 /*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 21:26:15 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/20 04:16:11 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2022/10/27 04:51:29 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_ITERATOR_HPP
 # define MAP_ITERATOR_HPP
 
+# include "pair.hpp"
 # include "iterator.hpp"
-# include "map.hpp"
+# include "enableIf.hpp"
 
 namespace ft
 {
+	template<class pair>
+	struct node
+	{
+		typedef	node<pair>*	node_ptr;
+	
+		node_ptr	left;
+		node_ptr	right;
+		node_ptr	parent;
+		pair		data;
+		int			depth;
+	
+		//default constructor, set all value to 0 and depth to 1
+		node(): left(nullptr), right(nullptr), parent(nullptr), data(), depth(1){}
+		node(const pair& from): left(nullptr), right(nullptr), parent(nullptr), data(from), depth(1){}
+		node(const node& from): left(from.left), right(from.right), parent(from.parent), data(from.data), depth(from.depth){}
+	};
+	
 	template<class T, typename Cont>
 	struct map_iterator
 	{
@@ -29,18 +47,38 @@ namespace ft
 		typedef typename std::bidirectional_iterator_tag		iterator_category;
 		
 		node_ptr	_p;
+		node_ptr	_pEnd;
 
-		map_iterator();
-		map_iterator(node p): _p(p){}
-		map_iterator(const map_iterator& from): _p(from._p);
-		~iterator(){}
+		map_iterator(): _p(nullptr), _pEnd(nullptr) {}
+		map_iterator(node_ptr p, node_ptr pEnd): _p(p), _pEnd(pEnd)
+		{
+			if (!p)
+				_p = _pEnd;
+		}
+		map_iterator(const map_iterator& from): _p(from._p), _pEnd(from._pEnd) {}
+		template <class Iter>
+		map_iterator(const map_iterator<Iter, typename enable_if<
+                        !std::is_same<Iter, typename Cont::const_iterator::pointer>::value,
+                        Cont>::type>& from): _p(from._p), _pEnd(from._pEnd) {}
+		~map_iterator(){}
 
 		map_iterator&	operator=(const map_iterator& from)
 		{
-			if (*this == from)
+			if (this == &from)
 				return (*this);
 			_p = from._p;
+			_pEnd = from._pEnd;
 			return (*this);
+		}
+
+		reference	operator*() const
+		{
+			return (_p->data);
+		}
+		
+		pointer	operator->() const
+		{
+			return (&_p->data);
 		}
 		
 		//fun part, operators for map
@@ -48,6 +86,7 @@ namespace ft
 		{
 			node_ptr	tmp = _p;
 			node_ptr	current = _p;
+			
 			if (_p->right)
 			{
 				tmp = _p->right;
@@ -64,7 +103,7 @@ namespace ft
 					tmp = tmp->parent;
 				}
 				if (!tmp)
-					;//end
+					_p = _pEnd;//end
 				else
 					_p = tmp;
 			}
@@ -78,10 +117,17 @@ namespace ft
 		}
 		map_iterator&	operator--()
 		{
-			node_ptr	tmp;
-			node_ptr	current;
+			node_ptr	tmp = _p;
+			node_ptr	current = tmp;
+
 			
-			if (_p->left)
+			if (_p == _pEnd)
+			{
+				_p = _pEnd->parent;
+				return (*this);
+			}
+
+			if (tmp->left)
 			{
 				tmp = _p->left;
 				while (tmp->right)
@@ -97,7 +143,7 @@ namespace ft
 					tmp = tmp->parent;
 				}
 				if (!tmp)
-					;//begin
+					;//_p = _p; //begin fix ?
 				else
 					_p = tmp;
 			}
@@ -111,6 +157,26 @@ namespace ft
 		}
 	};
 	
+	template<class T, class Cont>
+	bool	operator==(const map_iterator<T,Cont>& lhs, const map_iterator<T,Cont>& rhs)
+	{
+		return(lhs._p == rhs._p);
+	}
+	template<class T, class T2, class Cont>
+	bool	operator==(const map_iterator<T,Cont>&lhs, const map_iterator<T2,Cont>& rhs)
+	{
+		return(lhs._p == rhs._p);
+	}
+	template<class T, class Cont>
+	bool	operator!=(const map_iterator<T,Cont>& lhs, const map_iterator<T,Cont>& rhs)
+	{
+		return(lhs._p != rhs._p);
+	}
+	template<class T, class T2, class Cont>
+	bool	operator!=(const map_iterator<T,Cont>& lhs, const map_iterator<T2,Cont>&rhs)
+	{
+		return(lhs._p != rhs._p);
+	}
 	
 }
 
