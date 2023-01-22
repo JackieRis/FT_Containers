@@ -39,11 +39,26 @@ namespace   ft
 		typedef typename Alloc::reference	reference;
 		typedef typename Alloc::const_reference	const_reference;
     private:
+		/* I will use Alloc to allocate, construct, destruct and deallocate my container
+		How to use it ?
+		_array = a.allocate(N); -> _array will be allocated by a size of 'N'
+		a.construct(&_array[i], val); -> Give value 'val' at _array's index 'i'
+		a.destruct(&_array[i]) */
 		Alloc	a;
         T		*_array;
         size_t	_cap;
 		size_t	_last;
 
+		/*##################################################################################*/
+		//                                Utils Function
+		/*##################################################################################*/
+
+		/*
+		Function to reallocate our _array, we first allocate a tmp variable with n size,
+		Then construct it with the acual _array.
+		Next step is destroying the old _array, when done, deallocate it.
+		Finally giving _array our new tmp.
+		*/
 		void	newalloc(size_t n)
 		{
 			T	*tmp =  a.allocate(n);
@@ -58,6 +73,11 @@ namespace   ft
 			_array = tmp;
 			_cap = n;
 		}
+
+		/* 
+		Right shift by '1' all values from end() to position.
+		Then increment by '1' our size.
+		*/
 		void	moveArray(iterator position)
 		{
 			iterator	it = end();
@@ -65,16 +85,24 @@ namespace   ft
 				*it = *(it - 1);
 			_last += 1;
 		}
+
+		/* 
+		Right shift by 'n' all values from end() to position.
+		Then increment by 'n' our size.
+		*/
 		void	moveArray(iterator position, size_t n)
 		{
 			iterator	it = end() + (n - 1);
 			
 			for (; it > position; --it)
-			{
 				*it = *(it - n);
-			}
 			_last += n;
 		}
+
+		/* 
+		Left shift by '1' all values from position to end(). 
+		Then decrement by '1' our size.
+		*/
 		void	revMoveArray(iterator position)
 		{
 			iterator	it = position;
@@ -82,6 +110,11 @@ namespace   ft
 				*it = *(it + 1);
 			_last -= 1;
 		}
+
+		/* 
+		Left shift by 'n' all values from position to end(). 
+		Then decrement by 'n' our size.
+		*/
 		void	revMoveArray(iterator position, size_t n)
 		{
 			iterator	it = position;
@@ -92,18 +125,40 @@ namespace   ft
 		}
 
     public:
+
+		/*##################################################################################*/
+		//                          Constructors and destructors
+		/*##################################################################################*/
+
+		/*
+			Basic constructor
+		*/
         vector(const allocator_type &alloc = allocator_type()): a(alloc), _array(a.allocate(0)), _cap(0), _last(0)
-		{}
+		{
+
+		}
+
+		/*
+			Most used constructor
+		*/
         vector(size_t n, const T& val = T(), const allocator_type &alloc = allocator_type()):a(alloc), _array(a.allocate(n)), _cap(n), _last(n)
         {
             for (size_t i = 0; i < n; i++)
         		a.construct(&_array[i], val);
         }
+
+		/*
+			Copy constructor
+		*/
         vector(const vector& from):a(from.a), _array(a.allocate(from._last)), _cap(from._last), _last(from._last)
 		{
 			for (size_t i = 0; i < _last; i++)
 				a.construct(&_array[i], from._array[i]);
 		}
+
+		/*
+			Constructor with iterators
+		*/
 		template<class inputIt>
 		vector(typename enable_if<!is_integral<inputIt>::value,inputIt>::type first, inputIt last, const allocator_type& alloc = allocator_type()): a(alloc)
 		{
@@ -114,6 +169,10 @@ namespace   ft
 			for (; first != last; ++first)
 				push_back(*first);
 		}
+
+		/*
+			Destructor
+		*/
         ~vector()
 		{
 			for (size_t i = 0;i < _last; i++)
@@ -123,27 +182,11 @@ namespace   ft
 		}
 		
 
-		//push_back to add an element at the end of the array
-		void	push_back(const value_type& val)
-		{
-			if (_last == _cap)
-			{
-				if (_cap == 0)
-					newalloc(2);
-				else
-					newalloc(_cap * 2);
-			}
-			a.construct(&_array[_last], val);
-			_last++;
-		}
-		void	pop_back()
-		{
-			_last--;
-			a.destroy(&_array[_last]);
-		}
 
+		/*##################################################################################*/
+		//                                  Begin and End
+		/*##################################################################################*/
 
-		//begin and end
 		iterator	begin(){return (iterator(_array));}
 		const_iterator	begin()const{return (const_iterator(_array));}
 		iterator	end(){return (iterator(_array + _last));}
@@ -154,24 +197,35 @@ namespace   ft
 		reverse_iterator	rend(){return (reverse_iterator(_array));}
 		const_reverse_iterator	rend()const{return (const_reverse_iterator(_array));}
 		
-		//****************************************************************
-		//capacity
+		/*##################################################################################*/
+		//                                    Capacity
+		/*##################################################################################*/
+
+
+
+		allocator_type	get_allocator()const {return (Alloc(a));}
+
 		size_t	size()const{return(_last);}
+
+		/* return maximum size wich could be allocated on machine */
 		size_type	max_size()const
 		{
 			return(a.max_size());
 		}
 		
 		size_type	capacity()const{return(_cap);}
+
 		bool	empty()const{return (_last == 0);}
-		//reserve more memory
+
+		/* reserve more memory */
 		void	reserve(size_type n)
 		{
 			if (n <= _cap)
 				return ;
 			newalloc(n);
 		}
-		//resize container and fill it with value_type 
+
+		/* resize container and fill it with value_type */
 		void	resize(size_type n, value_type val = value_type())
 		{
 			if (n == _cap)
@@ -199,18 +253,6 @@ namespace   ft
 			}
 		}
 		
-        vector&  operator=(const vector& from)
-        {
-            if (this == &from)
-                return (*this);
-            a = from.a;
-			_cap = from._cap;
-			_last = from._last;
-			_array = a.allocate(_cap);
-			for (size_t i = 0; i < _last; i++)
-				a.construct(&_array[i], from._array[i]);
-			return (*this);
-        }
 		template<class inputIt>
 		void	assign(typename enable_if<!is_integral<inputIt>::value,inputIt>::type first, inputIt last)
 		{
@@ -233,35 +275,63 @@ namespace   ft
 			for (size_t i = 0; i < count; i++)
 				push_back(value);
 		}
-		//**************************************************************************
-		//element access
+
+		/*##################################################################################*/
+		//                                Elements Access
+		/*##################################################################################*/
+
 		T&	operator[](size_t n)
 		{
 			return (_array[n]);
 		}
+
 		const T&	operator[](size_t n)const
 		{
 			return (_array[n]);
 		}
+		
 		reference	at(size_type n)
 		{
 			if (n >= _last)
 				throw std::out_of_range("not in vector range");
 			return (_array[n]);
 		}
+
 		const_reference	at(size_type n)const
 		{
 			if (n >= _last)
 				throw std::out_of_range("not in vector range");
 			return (_array[n]);
 		}
+
 		reference	front(){return (_array[0]);}
 		const_reference	front()const {return (_array[0]);}
 		reference	back(){return (_array[_last - 1]);}
 		const_reference	back()const {return (_array[_last - 1]);}
 		
-		//*************************************************************************
-		//modifiers
+		/*##################################################################################*/
+		//                                    Modifiers
+		/*##################################################################################*/
+
+		void	push_back(const value_type& val)
+		{
+			if (_last == _cap)
+			{
+				if (_cap == 0)
+					newalloc(2);
+				else
+					newalloc(_cap * 2);
+			}
+			a.construct(&_array[_last], val);
+			_last++;
+		}
+
+		void	pop_back()
+		{
+			_last--;
+			a.destroy(&_array[_last]);
+		}
+
 		iterator	insert(iterator position, const value_type& val)
 		{
 			if (position == end())
@@ -277,6 +347,7 @@ namespace   ft
 			a.construct(&*it, val);
 			return (it);
 		}
+
 		void	insert(iterator position, size_type n, const value_type& val)
 		{
 			size_t tmp = ft::distance(begin(), position);
@@ -296,6 +367,7 @@ namespace   ft
 				a.construct(&*it2, val);
 			return ;
 		}
+
 		template<class inputIterator>
 		void	insert(	iterator position,
 						inputIterator first,
@@ -313,6 +385,7 @@ namespace   ft
 				++it;
 			}
 		}
+
 		iterator	erase(iterator position)
 		{
 			size_t tmp = ft::distance(begin(), position);
@@ -326,6 +399,7 @@ namespace   ft
 			revMoveArray(position);
 			return (position);
 		}
+
 		iterator	erase(iterator first, iterator last)
 		{
 			size_t	tmp = ft::distance(begin(), first);
@@ -345,6 +419,7 @@ namespace   ft
 			revMoveArray(it, n);
 			return (it);
 		}
+
 		void	swap(vector& x)
 		{
 			std::swap(_array, x._array);
@@ -352,6 +427,7 @@ namespace   ft
 			std::swap(_last, x._last);
 			std::swap(_cap, x._cap);
 		}
+
 		void	clear()
 		{
 			for (size_t i = 0; i < _last; i++)
@@ -359,12 +435,24 @@ namespace   ft
 			_last = 0;
 		}
 
-		//*********************************************************************
-		//Allocator
-		allocator_type	get_allocator()const {return (Alloc(a));}
+		/*##################################################################################*/
+		//                                   Operators
+		/*##################################################################################*/
+
+        vector&  operator=(const vector& from)
+        {
+            if (this == &from)
+                return (*this);
+            a = from.a;
+			_cap = from._cap;
+			_last = from._last;
+			_array = a.allocate(_cap);
+			for (size_t i = 0; i < _last; i++)
+				a.construct(&_array[i], from._array[i]);
+			return (*this);
+        }
     };
-		//*********************************************************************
-		//operator
+	
 		template<class T, class Alloc>
 		bool	operator==(const vector<T, Alloc> &l, const vector<T, Alloc> &r)
 		{
