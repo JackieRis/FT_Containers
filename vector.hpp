@@ -130,35 +130,27 @@ namespace   ft
 		//                          Constructors and destructors
 		/*##################################################################################*/
 
-		/*
-			Basic constructor
-		*/
+		/* Basic constructor */
         vector(const allocator_type &alloc = allocator_type()): a(alloc), _array(a.allocate(0)), _cap(0), _last(0)
 		{
 
 		}
 
-		/*
-			Most used constructor
-		*/
+		/* Most used constructor */
         vector(size_t n, const T& val = T(), const allocator_type &alloc = allocator_type()):a(alloc), _array(a.allocate(n)), _cap(n), _last(n)
         {
             for (size_t i = 0; i < n; i++)
         		a.construct(&_array[i], val);
         }
 
-		/*
-			Copy constructor
-		*/
+		/* Copy constructor */
         vector(const vector& from):a(from.a), _array(a.allocate(from._last)), _cap(from._last), _last(from._last)
 		{
 			for (size_t i = 0; i < _last; i++)
 				a.construct(&_array[i], from._array[i]);
 		}
 
-		/*
-			Constructor with iterators
-		*/
+		/* Constructor with iterators */
 		template<class inputIt>
 		vector(typename enable_if<!is_integral<inputIt>::value,inputIt>::type first, inputIt last, const allocator_type& alloc = allocator_type()): a(alloc)
 		{
@@ -170,9 +162,7 @@ namespace   ft
 				push_back(*first);
 		}
 
-		/*
-			Destructor
-		*/
+		/* Destructor */
         ~vector()
 		{
 			for (size_t i = 0;i < _last; i++)
@@ -180,8 +170,6 @@ namespace   ft
 			
 			a.deallocate(_array, _cap);
 		}
-		
-
 
 		/*##################################################################################*/
 		//                                  Begin and End
@@ -200,8 +188,6 @@ namespace   ft
 		/*##################################################################################*/
 		//                                    Capacity
 		/*##################################################################################*/
-
-
 
 		allocator_type	get_allocator()const {return (Alloc(a));}
 
@@ -253,6 +239,10 @@ namespace   ft
 			}
 		}
 		
+		/*
+			Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+			the new contents are elements constructed from each of the elements in the range between first and last, in the same order.
+		*/
 		template<class inputIt>
 		void	assign(typename enable_if<!is_integral<inputIt>::value,inputIt>::type first, inputIt last)
 		{
@@ -267,6 +257,7 @@ namespace   ft
 			}
 		}
 
+		/* the new contents are n elements, each initialized to a copy of val. */
 		void	assign(size_type count, const T& value)
 		{
 			clear();
@@ -280,16 +271,19 @@ namespace   ft
 		//                                Elements Access
 		/*##################################################################################*/
 
+		/* Returns a reference to the element at position n in the vector container. */
 		T&	operator[](size_t n)
 		{
 			return (_array[n]);
 		}
 
+		/* Returns a reference to the element at position n in the vector container. */
 		const T&	operator[](size_t n)const
 		{
 			return (_array[n]);
 		}
 		
+		/* Returns a reference to the element at position n in the vector. */
 		reference	at(size_type n)
 		{
 			if (n >= _last)
@@ -297,6 +291,7 @@ namespace   ft
 			return (_array[n]);
 		}
 
+		/* Returns a reference to the element at position n in the vector. */
 		const_reference	at(size_type n)const
 		{
 			if (n >= _last)
@@ -304,8 +299,11 @@ namespace   ft
 			return (_array[n]);
 		}
 
+		/* Returns a reference to the first element in the vector. */
 		reference	front(){return (_array[0]);}
 		const_reference	front()const {return (_array[0]);}
+
+		/* Returns a reference to the last element in the vector. */
 		reference	back(){return (_array[_last - 1]);}
 		const_reference	back()const {return (_array[_last - 1]);}
 		
@@ -313,6 +311,7 @@ namespace   ft
 		//                                    Modifiers
 		/*##################################################################################*/
 
+		/* Adds a new element at the end of the vector, after its current last element. The content of val is copied (or moved) to the new element. */
 		void	push_back(const value_type& val)
 		{
 			if (_last == _cap)
@@ -326,12 +325,21 @@ namespace   ft
 			_last++;
 		}
 
+		/* Removes the last element in the vector, effectively reducing the container size by one. */
 		void	pop_back()
 		{
 			_last--;
 			a.destroy(&_array[_last]);
 		}
 
+
+		/* 
+			The vector is extended by inserting new elements before the element at the specified position, effectively increasing the container size by the 
+			number of elements inserted.
+
+			Because vectors use an array as their underlying storage, inserting elements in positions other than the vector end causes the container to relocate
+			all the elements that were after position to their new positions.
+		*/
 		iterator	insert(iterator position, const value_type& val)
 		{
 			if (position == end())
@@ -386,6 +394,7 @@ namespace   ft
 			}
 		}
 
+		/* Removes from the vector a single element (position). */
 		iterator	erase(iterator position)
 		{
 			size_t tmp = ft::distance(begin(), position);
@@ -400,6 +409,7 @@ namespace   ft
 			return (position);
 		}
 
+		/*  Removes from the vector a range of elements ([first,last)). */
 		iterator	erase(iterator first, iterator last)
 		{
 			size_t	tmp = ft::distance(begin(), first);
@@ -420,6 +430,7 @@ namespace   ft
 			return (it);
 		}
 
+		/* Exchanges the content of the container by the content of x, which is another vector object of the same type. Sizes may differ. */
 		void	swap(vector& x)
 		{
 			std::swap(_array, x._array);
@@ -428,6 +439,7 @@ namespace   ft
 			std::swap(_cap, x._cap);
 		}
 
+		/* Removes all elements from the vector (which are destroyed), leaving the container with a size of 0. */
 		void	clear()
 		{
 			for (size_t i = 0; i < _last; i++)
@@ -452,7 +464,7 @@ namespace   ft
 			return (*this);
         }
     };
-	
+
 		template<class T, class Alloc>
 		bool	operator==(const vector<T, Alloc> &l, const vector<T, Alloc> &r)
 		{
