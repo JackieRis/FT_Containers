@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:31:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 04:54:39 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/01/30 07:05:08 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,37 @@ namespace ft
 			}
 			y->right = n;
 			n->parent = y;
+		}
+		
+		void	recInsert(node_ptr root, node_ptr n)
+		{
+			if (root != NULL)
+			{
+				if (n->data.first < root->data.first)
+				{
+					if (base->left != NULL)
+					{	
+						recInsert(base->left, n);
+						return ;
+					}	
+					else
+						base->left = n;
+				}
+				else
+				{
+					if (base->right != NULL)
+					{	
+						recInsert(base->right, n);
+						return ;
+					}
+					else
+						base->right = n;
+				}
+			}
+			n->parent = base;
+			n->left = NULL;
+			n->right = NULL;
+			n->color = red;
 		}
 	};
 }

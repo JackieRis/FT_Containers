@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 00:00:35 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 04:35:11 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/01/30 06:57:25 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ namespace ft
     template<class pair>
     struct node
 	{
-		typedef	node<pair>*	node_ptr;
+		typedef	node*	node_ptr;
+		typedef node&	node_ref;
 		
 		Color		color;
 		bool		isSentinel;
@@ -52,8 +53,6 @@ namespace ft
 		{
 			
 		}
-		
-		
 	};
 };
 #endif
