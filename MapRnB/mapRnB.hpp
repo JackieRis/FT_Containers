@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:31:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 03:27:13 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/01/30 04:54:39 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ namespace ft
 		size_t			node_count;
 		
 	private:
+		template<class pair>
+		node_ptr	createSentinel()
+		{
+			node_ptr	sentinel = a.allocate(1);
+			a.construct(sentinel, node<pair>(0,true,BLACK,NULL,NULL,NULL));
+		}
 
 		int	get_depth(node_ptr n)
 		{
@@ -89,10 +95,40 @@ namespace ft
 		{
 			node_ptr	y = n->right;
 			n->right = y->left;
-			
+			if (y->left->isSentinel == false)
+				y->left->parent = n;
+			y->parent = n->parent;
+			if (n->parent == NULL)
+				base = y;
+			else
+			{
+				if (n->parent->left == n)
+					n->parent->left = y;
+				else
+					n->parent->right = y;
+			}
+			y->left = n;
+			n->parent = y;
 		}
 		void	right_rotate(node_ptr n)
-		{}
+		{
+			node_ptr	y = n->left;
+			n->left = y->right;
+			if (y->right->isSentinel == true)
+				y->right->parent = n;
+			y->parent = n->parent;
+			if (n->parent == NULL)
+				base = y;
+			else
+			{
+				if (n->parent->right == n)
+					n->parent->right = y;
+				else
+					n->parent->left = y;
+			}
+			y->right = n;
+			n->parent = y;
+		}
 	};
 }
 

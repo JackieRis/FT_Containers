@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 19:38:26 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 02:51:05 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/01/30 04:22:13 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ namespace ft
 	size_t			node_count;
 	
 		private:
-
+	
 	//depth getter and calculators to help rebalancing the tree
 	int	get_depth(node_ptr n)
 	{
