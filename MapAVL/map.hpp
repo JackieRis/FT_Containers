@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 19:38:26 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/27 08:38:09 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/01/30 02:51:05 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 # define MAP_HPP
 
 # include <memory>
-# include "map_iterator.hpp"
-# include "pair.hpp"
-# include "reverse_iterator.hpp"
-# include "lexicographical_compare.hpp"
-# include "equal.hpp"
+# include "../Iterators/AVLIterator.hpp"
+# include "../Utils/pair.hpp"
+# include "../Iterators/reverse_iterator.hpp"
+# include "../Utils/lexicographical_compare.hpp"
+# include "../Utils/equal.hpp"
+# include "nodeAVL.hpp"
 
 namespace ft
 {	
@@ -77,7 +78,7 @@ namespace ft
 	
 		private:
 
-	//depth getter and calucators to help rebalancing the tree
+	//depth getter and calculators to help rebalancing the tree
 	int	get_depth(node_ptr n)
 	{
 		if (n)
