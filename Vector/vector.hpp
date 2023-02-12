@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:17:35 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/27 10:31:24 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/11 23:04:33 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 # include <memory>
 # include <limits.h>
 # include <stdexcept>
-# include "iterator.hpp"
-# include "isIntegral.hpp"
-# include "enableIf.hpp"
-# include "equal.hpp"
-# include "lexicographical_compare.hpp"
-# include "reverse_iterator.hpp"
+# include "../Iterators/iterator.hpp"
+# include "../Utils/isIntegral.hpp"
+# include "../Utils/enableIf.hpp"
+# include "../Utils/equal.hpp"
+# include "../Utils/lexicographical_compare.hpp"
+# include "../Iterators/reverse_iterator.hpp"
 
 namespace   ft
 {

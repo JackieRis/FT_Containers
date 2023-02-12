@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tnguyen- <tnguyen-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 05:01:58 by tnguyen-          #+#    #+#             */
-/*   Updated: 2022/10/26 23:39:23 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/11 23:05:14 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
-# include "vector.hpp"
-# include "stack.hpp"
+# include "../Vector/vector.hpp"
 
 namespace ft
 {

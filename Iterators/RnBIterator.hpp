@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 01:11:58 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 01:12:38 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:27:52 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 namespace ft
 {
 	template<class T, typename Cont>
-	struct AVLIterator
+	struct RnBIterator
 	{
 		typedef ft::node<typename Cont::value_type>*			node_ptr;
 		typedef typename iterator_traits<T>::difference_type	difference_type;
@@ -33,20 +33,20 @@ namespace ft
 		node_ptr	_p;
 		node_ptr	_pEnd;
 
-		AVLIterator(): _p(nullptr), _pEnd(nullptr) {}
-		AVLIterator(node_ptr p, node_ptr pEnd): _p(p), _pEnd(pEnd)
+		RnBIterator(): _p(nullptr), _pEnd(nullptr) {}
+		RnBIterator(node_ptr p, node_ptr pEnd): _p(p), _pEnd(pEnd)
 		{
 			if (!p)
 				_p = _pEnd;
 		}
-		AVLIterator(const AVLIterator& from): _p(from._p), _pEnd(from._pEnd) {}
+		RnBIterator(const RnBIterator& from): _p(from._p), _pEnd(from._pEnd) {}
 		template <class Iter>
-		AVLIterator(const AVLIterator<Iter, typename enable_if<
+		RnBIterator(const RnBIterator<Iter, typename enable_if<
                         !std::is_same<Iter, typename Cont::const_iterator::pointer>::value,
                         Cont>::type>& from): _p(from._p), _pEnd(from._pEnd) {}
-		~AVLIterator(){}
+		~RnBIterator(){}
 
-		AVLIterator&	operator=(const AVLIterator& from)
+		RnBIterator&	operator=(const RnBIterator& from)
 		{
 			if (this == &from)
 				return (*this);
@@ -66,7 +66,7 @@ namespace ft
 		}
 		
 		//fun part, operators for map
-		AVLIterator&	operator++()
+		RnBIterator&	operator++()
 		{
 			node_ptr	tmp = _p;
 			node_ptr	current = _p;
@@ -93,13 +93,13 @@ namespace ft
 			}
 			return (*this);
 		}
-		AVLIterator	operator++(int)
+		RnBIterator	operator++(int)
 		{
-			AVLIterator	tmp = *this;
+			RnBIterator	tmp = *this;
 			++(*this);
 			return (tmp);
 		}
-		AVLIterator&	operator--()
+		RnBIterator&	operator--()
 		{
 			node_ptr	tmp = _p;
 			node_ptr	current = tmp;
@@ -133,31 +133,31 @@ namespace ft
 			}
 			return (*this);
 		}
-		AVLIterator	operator--(int)
+		RnBIterator	operator--(int)
 		{
-			AVLIterator	tmp = *this;
+			RnBIterator	tmp = *this;
 			--(*this);
 			return (tmp);
 		}
 	};
 	
 	template<class T, class Cont>
-	bool	operator==(const AVLIterator<T,Cont>& lhs, const AVLIterator<T,Cont>& rhs)
+	bool	operator==(const RnBIterator<T,Cont>& lhs, const RnBIterator<T,Cont>& rhs)
 	{
 		return(lhs._p == rhs._p);
 	}
 	template<class T, class T2, class Cont>
-	bool	operator==(const AVLIterator<T,Cont>&lhs, const AVLIterator<T2,Cont>& rhs)
+	bool	operator==(const RnBIterator<T,Cont>&lhs, const RnBIterator<T2,Cont>& rhs)
 	{
 		return(lhs._p == rhs._p);
 	}
 	template<class T, class Cont>
-	bool	operator!=(const AVLIterator<T,Cont>& lhs, const AVLIterator<T,Cont>& rhs)
+	bool	operator!=(const RnBIterator<T,Cont>& lhs, const RnBIterator<T,Cont>& rhs)
 	{
 		return(lhs._p != rhs._p);
 	}
 	template<class T, class T2, class Cont>
-	bool	operator!=(const AVLIterator<T,Cont>& lhs, const AVLIterator<T2,Cont>&rhs)
+	bool	operator!=(const RnBIterator<T,Cont>& lhs, const RnBIterator<T2,Cont>&rhs)
 	{
 		return(lhs._p != rhs._p);
 	}

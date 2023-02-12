@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:31:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 07:05:08 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/02 12:33:59 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ namespace ft
 		typedef typename pair_alloc::const_reference		const_reference;
 		typedef typename pair_alloc::difference_type		difference_type;
 		typedef typename pair_alloc::size_type				size_type;
-		typedef ft::map_iterator<value_type *, map>			iterator;
-		typedef ft::map_iterator<const value_type *, map>	const_iterator;
+		typedef ft::RnBIterator<value_type *, mapRnB>			iterator;
+		typedef ft::RnBIterator<const value_type *, mapRnB>	const_iterator;
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
@@ -84,13 +84,43 @@ namespace ft
 			node_ptr	sentinel = a.allocate(1);
 			a.construct(sentinel, node<pair>(0,true,BLACK,NULL,NULL,NULL));
 		}
-
-		int	get_depth(node_ptr n)
+		
+		node_ptr	get_node()
 		{
-			if (n)
-				return (n->depth);
-			return (0);
+			return (na.allocate(1));
 		}
+
+		node_ptr	create_node(const node_type& x)
+		{
+			node_ptr	p = get_node();
+			
+			try
+			{
+				na.construct(p, x);
+			}
+			catch(...)
+			{
+				na.deallocate(p,1);
+				throw ;
+			}
+			return (p);
+		}
+		
+		void	destroy_node(node_ptr x)
+		{
+			na.destroy(x);
+			na.deallocate(x,1);
+		}
+		
+		void	clearMap(node_ptr n)
+		{
+			if (!n)
+				return ;
+			clearMap(n->right);
+			clearMap(n->left);
+			destroy_node(n);
+		}
+		
 		void	left_rotate(node_ptr n)
 		{
 			node_ptr	y = n->right;
@@ -130,6 +160,13 @@ namespace ft
 			n->parent = y;
 		}
 		
+		void clear()
+		{
+			clearMap(base);
+			base = nullptr;
+			node_count = 0;
+		}
+
 		void	recInsert(node_ptr root, node_ptr n)
 		{
 			if (root != NULL)
@@ -158,8 +195,55 @@ namespace ft
 			n->parent = base;
 			n->left = NULL;
 			n->right = NULL;
-			n->color = red;
+			n->color = RED;
 		}
+		
+	public:
+	
+		/*##################################################################################*/
+		/*                              Members functions                                   */
+		/*##################################################################################*/
+		
+		explicit mapRnB(const key_compare& comp = key_compare(), const Alloc& alloc = Alloc()): a(alloc), na(alloc), vc(comp), kc(comp), base(nullptr), endnode(create_node(node_type())), node_count(0) {}
+		template<class inputIterator>
+		mapRnB(inputIterator first, inputIterator last, const key_compare& comp = key_compare(), const Alloc& alloc = Alloc()): a(alloc), na(alloc), vc(comp), kc(comp), base(nullptr), endnode(create_node(node_type())), node_count(0)
+		{
+			insert(first, last);
+		}
+		mapRnB(const mapRnB& from): a(from.a), na(from.na), vc(from.vc), kc(from.kc), base(dupNode(from.base)), endnode(create_node(node_type())), node_count(from.node_count)
+		{
+			updateEnd();
+		}
+		~mapRnB()
+		{
+			destroy_node(endnode);
+			clearmap(base);
+		}
+	
+		allocator_type	get_allocator() const {return (Alloc(a));}
+	
+		mapRnB&	operator=(const mapRnB& from)
+		{
+			if (this == &from)
+				return (*this);
+			clear();
+			a = from.a;
+			na = from.na;
+			kc = from.kc;
+			vc = from.vc;
+			if (from.base)
+			{
+				base = dupNode(from.base);
+				node_count = from.node_count;
+				updateEnd();
+			}
+			return (*this);
+		}
+	
+		iterator	lower_bound(const key_type& k)
+		{
+			value_type	f = ft::make_pair(k, mapped_type());
+		}	
 	};
 }
 
