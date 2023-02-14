@@ -6,12 +6,13 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:08:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/12 04:05:45 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/14 18:14:54 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Vector/vector.hpp"
 #include "Stack/stack.hpp"
+#include <stdio.h>
 #include <iostream>
 #include <sstream>
 
@@ -19,13 +20,16 @@ int main()
 {
 	ft::vector<int>				vecInt;
 	
-	std::cout << "Checking if vecInt is well set: " << std::endl;
+	printf("Checking if vecInt is well set: ");
 	for (size_t i = 0; i < 10; i++)
 	{
 		vecInt.push_back(i * i * 2);
 		std::cout << "index " << i << ": " << vecInt.at(i) << std::endl;
 	}
 	
+	std::cout << std::endl;
+	std::cout << "Checking max_size() result: " << std::endl;
+	std::cout << vecInt.max_size() << std::endl;
 	std::cout << std::endl;
 
 	{
@@ -55,10 +59,38 @@ int main()
 			std::cout << "index " << i << ": " << *Iter << std::endl;
 	}
 
+	std::cout << "size() result: " << std::endl;
+	std::cout << vecInt.size() << std::endl;
+
 	std::cout << std::endl;
 	
 	{
+		std::cout << "Deleting all elements with pop_back function" << std::endl;
+		
+		ft::vector<int>::iterator	Iter = vecInt.begin();
 
+		for (size_t i = 0; i < 11; ++i)
+			vecInt.pop_back();
+
+		std::cout << "empty() result: " << std::endl;
+		std::cout << vecInt.empty() << std::endl;
+		std::cout << "capacity() result: " << std::endl;
+		std::cout << vecInt.capacity() << std::endl;
+		std::cout << "Resizing our vector to 10 with default value " << std::endl;
+		vecInt.resize(10);
+		std::cout << "size() result: " << std::endl;
+		std::cout << vecInt.size() << std::endl;
+		
+	}
+	
+	std::cout << std::endl;
+
+	{
+		std::cout << "Vector content: " << std::endl;
+		ft::vector<int>::iterator	Iter = vecInt.begin();
+
+		for (size_t i = 0; Iter != vecInt.end(); ++Iter, ++i)
+			std::cout << "index " << i << ": " << *Iter << std::endl;
 	}
 
 	return (0);
