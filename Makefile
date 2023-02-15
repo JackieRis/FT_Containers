@@ -6,7 +6,7 @@
 #    By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/11 22:44:27 by tnguyen-          #+#    #+#              #
-#    Updated: 2023/02/11 23:03:40 by tnguyen-         ###   ########.fr        #
+#    Updated: 2023/02/15 22:52:47 by tnguyen-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS	= main.cpp
 
 OBJ	= ${SRCS:.cpp=.o}
 
-CC = c++
+CC = clang++
 
 FLAGS = -fsanitize=address -Wall -Werror -Wextra -std=c++98 -I.
 
