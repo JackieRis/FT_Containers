@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:08:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/21 08:01:57 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/21 08:57:52 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,7 +350,162 @@ int main()
 	
 	{
 		/*##################################################################################*/
-		//                                 MAP TESTS
+		//                                Modifiers TESTS
 		/*##################################################################################*/
+		
+		std::cout << std::endl;
+		
+		std::cout << RED << "Modifiers" << RESET << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Insert test" << RESET << std::endl;
+		
+		ft::map<int, std::string>	Users;
+		Users.insert(ft::make_pair(0, "toto"));
+		Users.insert(ft::make_pair(404, "Error"));
+		Users.insert(ft::make_pair(42, "42"));
+		Users.insert(ft::make_pair(1, "tata"));
+		Users.insert(ft::make_pair(-15, "negative"));
+		Users.insert(ft::make_pair(2147483647, "Int max"));
+		Users.insert(ft::make_pair(-2147483648, "Int min"));
+
+		for (size_t i = 30; i < 40; i++)
+			Users.insert(ft::make_pair(i, "baguette"));
+		
+		ft::map<int, std::string>::iterator	Beg = Users.begin();
+		ft::map<int, std::string>::iterator	End = Users.end();
+		for (; Beg != End; ++Beg)
+			std::cout << BLUE << "Users: " << RESET << Beg->first << " | " << Beg->second << std::endl;
+			
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Erase test" << RESET << std::endl;
+		Users.erase(Users.begin());
+		Beg = Users.begin();
+		Beg++;
+		Users.erase(Beg, Users.end());
+		
+		Beg = Users.begin();
+		for (; Beg != End; ++Beg)
+			std::cout << BLUE << "Users: " << RESET << Beg->first << " | " << Beg->second << std::endl;
+			
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Swap test" << RESET << std::endl;
+		ft::map<int, std::string>	Users2;
+		Users2.insert(ft::make_pair(0, "toto"));
+		Users2.insert(ft::make_pair(404, "Error"));
+		Users2.insert(ft::make_pair(42, "42"));
+		Users2.insert(ft::make_pair(1, "tata"));
+		Users2.insert(ft::make_pair(-15, "negative"));
+		Users2.insert(ft::make_pair(2147483647, "Int max"));
+		Users2.insert(ft::make_pair(-2147483648, "Int min"));
+
+		Users.swap(Users2);
+
+		Beg = Users.begin();
+		End = Users.end();
+		for (; Beg != End; ++Beg)
+			std::cout << BLUE << "Users: " << RESET << Beg->first << " | " << Beg->second << std::endl;
+			
+		std::cout << std::endl;
+		
+		Beg = Users2.begin();
+		End = Users2.end();
+		
+		for (; Beg != End; ++Beg)
+			std::cout << BLUE << "Users2: " << RESET << Beg->first << " | " << Beg->second << std::endl;
+			
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Clear test" << RESET << std::endl;
+		Users.clear();
+		Users2.clear();
+
+		if (Users.empty() && Users2.empty())
+			std::cout << BLUE << "Users and Users2 are empty" << RESET << std::endl;
+		else
+			std::cout << RED << "Users and Users2 are not empty" << RESET << std::endl;
+	}
+	
+	{
+		/*##################################################################################*/
+		//                                Observers TESTS
+		/*##################################################################################*/
+		
+		std::cout << std::endl;
+		
+		std::cout << RED << "Observers" << RESET << std::endl;
+
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Key_comp test" << RESET << std::endl;
+		ft::map<int, std::string>	Users;
+		Users.insert(ft::make_pair(0, "toto"));
+		Users.insert(ft::make_pair(404, "Error"));
+		Users.insert(ft::make_pair(42, "42"));
+		Users.insert(ft::make_pair(1, "tata"));
+		Users.insert(ft::make_pair(-15, "negative"));
+		Users.insert(ft::make_pair(2147483647, "Int max"));
+		Users.insert(ft::make_pair(-2147483648, "Int min"));
+		
+		ft::map<int, std::string>::key_compare	comp = Users.key_comp();
+		ft::map<int, std::string>::iterator		Beg = Users.begin();
+		ft::map<int, std::string>::iterator		End = Users.end();
+		int										highest = Users.rbegin()->first;
+		ft::map<int, std::string>	Users2(Users);
+		
+		std::cout << comp(Users.begin()->first, Users.rbegin()->first) << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Value_comp test" << RESET << std::endl;
+		ft::map<int, std::string>::value_compare	comp2 = Users.value_comp();
+		ft::map<int, std::string>::iterator		Beg2 = Users2.begin();
+		ft::map<int, std::string>::iterator		End2 = Users2.end();
+		
+		std::cout << comp2(*Beg2, *End2) << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Find test" << RESET << std::endl;
+		ft::map<int, std::string>::iterator		it = Users.find(42);
+		ft::map<int, std::string>::iterator		it2 = Users.find(404);
+		ft::map<int, std::string>::iterator		it3 = Users.find(0);
+		
+		std::cout << BLUE << "Users: " << RESET << it->first << " | " << it->second << std::endl;
+		std::cout << BLUE << "Users: " << RESET << it2->first << " | " << it2->second << std::endl;
+		std::cout << BLUE << "Users: " << RESET << it3->first << " | " << it3->second << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Count test" << RESET << std::endl;
+		std::cout << BLUE << "Users: " << RESET << Users.count(42) << std::endl;
+		std::cout << BLUE << "Users: " << RESET << Users.count(404) << std::endl;
+		std::cout << BLUE << "Users: " << RESET << Users.count(0) << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Lower_bound test" << RESET << std::endl;
+		ft::map<int, std::string>::iterator		it4 = Users.lower_bound(42);
+		
+		std::cout << BLUE << "Users: " << RESET << it4->first << " | " << it4->second << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Upper_bound test" << RESET << std::endl;
+		ft::map<int, std::string>::iterator		it5 = Users.upper_bound(42);
+
+		std::cout << BLUE << "Users: " << RESET << it5->first << " | " << it5->second << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Equal_range test" << RESET << std::endl;
+		ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator>	ret;
+		ret = Users.equal_range(42);
+		
+		std::cout << BLUE << "Users: " << RESET << ret.first->first << " | " << ret.first->second << std::endl;
+		std::cout << BLUE << "Users: " << RESET << ret.second->first << " | " << ret.second->second << std::endl;
 	}
 }
