@@ -6,12 +6,13 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:08:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/15 23:15:19 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/21 08:01:57 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Vector/vector.hpp"
 #include "Stack/stack.hpp"
+#include "Map/map.hpp"
 #include <iostream>
 #include <sstream>
 
@@ -20,11 +21,12 @@
 #define BLUE    "\033[34m"      /* Blue */
 #define CYAN    "\033[36m"      /* Cyan */
 #define RED     "\033[31m" 
-
+#define GREEN   "\033[32m"
 
 int main()
 {
 	ft::vector<int>				vecInt;
+	ft::vector<int>::const_iterator	CIt = vecInt.begin();	
 
 	std::cout << RED << "Construct our vector" << RESET << std::endl;
 	std::cout << BLUE << "Checking if vecInt is well set" << RESET << std::endl;
@@ -170,6 +172,185 @@ int main()
 		std::cout << BLUE << "reserve(50) result: " << RESET << vecInt.capacity() << std::endl;
 		
 	}
+	
+	std::cout << std::endl;
 
-	return (0);
+	{
+		ft::vector<int>::iterator	Iter = vecInt.end();
+		
+		if (CIt != Iter)
+			std::cout << GREEN << "Congrats you can compare Iterators with const_iterators" << RESET << std::endl;
+		else
+			std::cout << RED << "CRASH" << RESET << std::endl;
+	}
+	
+	{
+		ft::vector<int>	baguette;
+		baguette.push_back(42);
+		baguette.push_back(42);
+		baguette.push_back(42);
+		baguette.push_back(42);
+		baguette.push_back(42);
+		std::cout << baguette.capacity() << std::endl;
+	}
+	
+	std::cout << std::endl;
+	
+	{
+		std::cout << BLUE << "Check if you well allocate your vector on basic constructor" << RESET << std::endl;
+		ft::vector<int>	test;
+		
+		std::cout << test[0] << std::endl;
+	}
+
+	std::cout << std::endl;
+	
+		/*##################################################################################*/
+		//                                 MAP TESTS
+		/*##################################################################################*/
+
+	std::cout << RED << "MAP TESTS" << RESET << std::endl;
+	std::cout << std::endl;
+
+	{
+		std::cout << RED << "CONSTRUCTORS" << RESET << std::endl;
+		ft::map<int, std::string>	Users;
+		std::cout << GREEN << "Default constructor" << RESET << std::endl;
+
+		Users.insert(ft::make_pair(0, "toto"));
+		Users.insert(ft::make_pair(404, "Error"));
+		Users.insert(ft::make_pair(42, "42"));
+		Users.insert(ft::make_pair(1, "tata"));
+		Users.insert(ft::make_pair(-15, "negative"));
+		Users.insert(ft::make_pair(2147483647, "Int max"));
+		Users.insert(ft::make_pair(-2147483648, "Int min"));
+		
+		ft::map<int, std::string>::iterator	Beg = Users.begin();
+		ft::map<int, std::string>::iterator	End = Users.end();
+		for (; Beg != End; ++Beg)
+			std::cout << BLUE << "Users: " << RESET << Beg->first << " | " << Beg->second << std::endl;
+		
+		std::cout << std::endl;
+		
+		ft::map<int, std::string>	Users2(Users);
+		std::cout << GREEN << "Copy constructor" << RESET << std::endl;
+		ft::map<int, std::string>::iterator	Beg2 = Users2.begin();
+		ft::map<int, std::string>::iterator	End2 = Users2.end();
+		for (; Beg2 != End2; ++Beg2)
+			std::cout << BLUE << "Users2: " << RESET << Beg2->first << " | " << Beg2->second << std::endl;
+		
+		Beg2 = Users2.begin();
+		Beg2++;
+		Beg2++;
+		
+		std::cout << std::endl;
+		std::cout << GREEN << "Iterator constructor" << RESET << std::endl;
+		ft::map<int, std::string>	Users3(Beg2, End2);
+		ft::map<int, std::string>::iterator	Beg3 = Users3.begin();
+		ft::map<int, std::string>::iterator	End3 = Users3.end();
+		
+		for (; Beg3 != End3; ++Beg3)
+			std::cout << BLUE << "Users3: " << RESET << Beg3->first << " | " << Beg3->second << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Operator= test" << RESET << std::endl;
+		Users3 = Users2;
+		Beg3 = Users3.begin();
+		End3 = Users3.end();
+		for (; Beg3 != End3; ++Beg3)
+			std::cout << BLUE << "Users3: " << RESET << Beg3->first << " | " << Beg3->second << std::endl;
+			
+		std::cout << std::endl;
+		std::cout << GREEN << "Get_allocator test" << RESET << std::endl;
+		ft::map<int, std::string>::allocator_type	alloc = Users3.get_allocator();
+		std::cout << GREEN << "No crash, you passed the test" << RESET << std::endl;
+		
+		std::cout << std::endl;
+		std::cout << RED << "Element access" << RESET << std::endl;
+		
+		std::cout << std::endl;
+		std::cout << GREEN << "Operator[] test" << RESET << std::endl;
+		std::cout << BLUE << Users3[42] << RESET << std::endl;
+
+		std::cout << std::endl;
+		std::cout << GREEN << "Operator[] test" << RESET << std::endl;
+		Users3[42] = "42bis";
+		std::cout << BLUE << Users3[42] << RESET << std::endl;
+		
+		std::cout << std::endl;
+		
+		/*##################################################################################*/
+		//                                 ITERATORS TESTS
+		/*##################################################################################*/
+		
+		std::cout << RED << "Iterators" << RESET << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Begin test" << RESET << std::endl;
+		ft::map<int, std::string>::iterator	Begin = Users3.begin();
+		std::cout << BLUE << "Begin: " << RESET << Begin->first << " | " << Begin->second << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "End test" << RESET << std::endl;
+		ft::map<int, std::string>::iterator	End4 = Users3.end();
+		End4--;
+		std::cout << BLUE << "End: " << RESET << End4->first << " | " << End4->second << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Rbegin test" << RESET << std::endl;
+		ft::map<int, std::string>::reverse_iterator	RBegin = Users3.rbegin();
+		std::cout << BLUE << "RBegin: " << RESET << RBegin->first << " | " << RBegin->second << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Rend test" << RESET << std::endl;
+		ft::map<int, std::string>::reverse_iterator	REnd = Users3.rend();
+		REnd--;
+		std::cout << BLUE << "REnd: " << RESET << REnd->first << " | " << REnd->second << std::endl;
+	}
+	
+	{
+		/*##################################################################################*/
+		//                                 Capacity TESTS
+		/*##################################################################################*/
+		
+		std::cout << std::endl;
+		
+		std::cout << RED << "Capacity" << RESET << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Empty test" << RESET << std::endl;
+		ft::map<int, std::string>	Users;
+		std::cout << BLUE << "Empty: " << RESET << Users.empty() << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << GREEN << "Size test" << RESET << std::endl;
+		
+		Users.insert(ft::make_pair(0, "toto"));
+		Users.insert(ft::make_pair(404, "Error"));
+		Users.insert(ft::make_pair(42, "42"));
+		Users.insert(ft::make_pair(1, "tata"));
+		Users.insert(ft::make_pair(-15, "negative"));
+		Users.insert(ft::make_pair(2147483647, "Int max"));
+		Users.insert(ft::make_pair(-2147483648, "Int min"));
+
+		std::cout << BLUE << "Size: " << RESET << Users.size() << std::endl;
+		
+		std::cout << std::endl;
+		
+		std::cout << GREEN << "Max_size test" << RESET << std::endl;
+		std::cout << BLUE << "Max_size: " << RESET << Users.max_size() << std::endl;
+	}
+	
+	{
+		/*##################################################################################*/
+		//                                 MAP TESTS
+		/*##################################################################################*/
+	}
 }

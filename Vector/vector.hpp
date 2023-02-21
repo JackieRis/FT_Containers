@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:17:35 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/11 23:04:33 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/15 23:35:31 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,7 +317,7 @@ namespace   ft
 			if (_last == _cap)
 			{
 				if (_cap == 0)
-					newalloc(2);
+					newalloc(1);
 				else
 					newalloc(_cap * 2);
 			}

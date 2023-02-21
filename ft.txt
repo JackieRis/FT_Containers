@@ -1,0 +1,119 @@
+[31mConstruct our vector[0m
+[34mChecking if vecInt is well set[0m
+index 0: 0
+index 1: 2
+index 2: 8
+index 3: 18
+index 4: 32
+index 5: 50
+index 6: 72
+index 7: 98
+index 8: 128
+index 9: 162
+
+[31mmax_size() result: [0m
+4611686018427387903
+
+[31merase()[0m
+[34mErasing from index 3 to index 7 include.[0m
+index 0: 0
+index 1: 2
+index 2: 8
+index 3: 128
+index 4: 162
+
+[31minsert()[0m
+[34mInserting at index 2[0m
+index 0: 0
+index 1: 2
+index 2: 8
+index 3: 10
+index 4: 12
+index 5: 12
+index 6: 12
+index 7: 12
+index 8: 12
+index 9: 128
+index 10: 162
+
+[31msize()[0m
+[34msize() result: [0m
+11
+
+[31mfront() and back()[0m
+[34mFront value: [0m0
+[34mBack value: [0m162
+
+[31mCopy constructor[0m
+[34mVector's copy constructor called for baguette from vecInt[0m
+[31mpop_back()[0m
+[34mDeleting all elements with pop_back function[0m
+[31mempty() result: [0m
+1
+[31mcapacity() result: [0m
+16
+[31mresize()[0m
+[34mResizing our vector to 10 with default value [0m
+[31msize() result: [0m
+10
+[34mVector content: [0m
+index 0: 0
+index 1: 0
+index 2: 0
+index 3: 0
+index 4: 0
+index 5: 0
+index 6: 0
+index 7: 0
+index 8: 0
+index 9: 0
+
+[31mCLEAR()[0m
+[34mVector content: [0m
+[34mempty() test: [0m1
+
+[31mSWAP()[0m
+[34mfilling our tmp array with 20 value of 42[0m
+[34mempty() test on vector tmp: [0m0
+[34mSwap tmp and vecInt[0m
+index 0: 42
+index 1: 42
+index 2: 42
+index 3: 42
+index 4: 42
+index 5: 42
+index 6: 42
+index 7: 42
+index 8: 42
+index 9: 42
+index 10: 42
+index 11: 42
+index 12: 42
+index 13: 42
+index 14: 42
+index 15: 42
+index 16: 42
+index 17: 42
+index 18: 42
+index 19: 42
+
+[31mASSIGN()[0m
+[34mAssign all values from baguette to vecInt[0m
+index 0: 0
+index 1: 2
+index 2: 8
+index 3: 10
+index 4: 12
+index 5: 12
+index 6: 12
+index 7: 12
+index 8: 12
+index 9: 128
+index 10: 162
+
+[31mreserve()[0m
+[34mOld vecInt capacity: [0m20
+[34mTry to reserve a capacity of 15, should do nothing because n is smaller than our cap[0m
+[34mcapacity() returns: [0m20
+[34mreserve(50) result: [0m50
+[32mCongrats you can compare Iterators with const_iterators[0m

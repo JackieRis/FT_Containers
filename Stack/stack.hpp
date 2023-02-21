@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 05:01:58 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/11 23:05:14 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/16 00:04:51 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ namespace ft
 
 	value_type&	top(){return (c.back());}
 	const value_type& top()const{return (c.back());}
+
 	void	push(const value_type& val){c.push_back(val);}
 	void	pop(){c.pop_back();}
-	bool	empty()const{return (c.empty());}
+
+	bool		empty()const{return (c.empty());}
+
 	size_type	size(){return (c.size());}
 
 	template<class Type, class C>

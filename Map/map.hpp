@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 19:38:26 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/01/30 04:22:13 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/21 07:00:29 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <memory>
 # include "../Iterators/AVLIterator.hpp"
 # include "../Utils/pair.hpp"
+# include "../Iterators/AVLIterator.hpp"
 # include "../Iterators/reverse_iterator.hpp"
 # include "../Utils/lexicographical_compare.hpp"
 # include "../Utils/equal.hpp"
@@ -62,8 +63,8 @@ namespace ft
 	typedef typename pair_alloc::const_reference		const_reference;
 	typedef typename pair_alloc::difference_type		difference_type;
 	typedef typename pair_alloc::size_type				size_type;
-	typedef ft::map_iterator<value_type *, map>			iterator;
-	typedef ft::map_iterator<const value_type *, map>	const_iterator;
+	typedef ft::AVLIterator<value_type *, map>			iterator;
+	typedef ft::AVLIterator<const value_type *, map>	const_iterator;
 	typedef ft::reverse_iterator<iterator>				reverse_iterator;
 	typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 		
@@ -363,6 +364,7 @@ namespace ft
 	}
 		
 		public:
+
 	explicit map(const key_compare& comp = key_compare(), const Alloc& alloc = Alloc()): a(alloc), na(alloc), vc(comp), kc(comp), base(nullptr), endnode(create_node(node_type())), node_count(0) {}
 	template<class inputIterator>
 	map(inputIterator first, inputIterator last, const key_compare& comp = key_compare(), const Alloc& alloc = Alloc()): a(alloc), na(alloc), vc(comp), kc(comp), base(nullptr), endnode(create_node(node_type())), node_count(0)
