@@ -2,10 +2,10 @@
 
 Working on transforming avl tree to black and red tree at first.  
 
-RNB tree's rules:
-```1- Root is allways black```
-```2- Red node's sons are allways black```
-```3- Every path from leaf to root must have the same amount of black nodes```
+RNB tree's rules:  
+```1- Root is allways black```  
+```2- Red node's sons are allways black```  
+```3- Every path from leaf to root must have the same amount of black nodes```  
 
 ## Work in Progress
 
