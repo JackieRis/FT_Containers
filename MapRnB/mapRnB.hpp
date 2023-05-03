@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:31:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/02 12:33:59 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:31:27 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,6 @@ namespace ft
 			n->parent = y;
 		}
 		
-		void clear()
-		{
-			clearMap(base);
-			base = nullptr;
-			node_count = 0;
-		}
 
 		void	recInsert(node_ptr root, node_ptr n)
 		{
@@ -200,6 +194,7 @@ namespace ft
 		
 	public:
 	
+
 		/*##################################################################################*/
 		/*                              Members functions                                   */
 		/*##################################################################################*/
@@ -239,11 +234,101 @@ namespace ft
 			}
 			return (*this);
 		}
-	
-		iterator	lower_bound(const key_type& k)
+
+		/*##################################################################################*/
+		/*                                    Modifiers                                     */
+		/*##################################################################################*/
+
+		void clear()
 		{
-			value_type	f = ft::make_pair(k, mapped_type());
-		}	
+			clearMap(base);
+			base = nullptr;
+			node_count = 0;
+		}
+
+		/*##################################################################################*/
+		/*                                      lookup                                      */
+		/*##################################################################################*/
+
+		size_type	count(const Key& key) const
+		{
+			return (find(key) != end());
+		}
+
+		iterator	find(const key_type& k)
+		{
+			value_type	f = ft::make_pair(k, mapped_type());	//f is key's pair
+			node_ptr	tmp = base;								//tmp is our base
+			
+			while (tmp)
+			{
+				if (tmp->data.first == k)
+				{
+					if (tmp->color == -1)
+						return NULL;
+					return (iterator(tmp, endnode));
+				}
+				else if (vc(f, tmp->data))							// if element is on left->side 
+					tmp = tmp->left;
+				else if (vc(tmp->data, f))						// if element is on right->side
+					tmp = tmp->right;
+				else											// we found it
+					return (iterator(tmp, endnode));
+			}
+			return (end());										//error 404 not found
+		}
+
+		iterator	lower_bound(const Key& key)
+		{
+			iterator	it = begin();
+			iterator	itEnd = end();
+
+			while (it != itEnd)
+			{
+				if (!kc(it->first, key))
+					return (it);
+				++it;
+			}
+		}
+		const_iterator	lower_bound(const Key& key) const
+		{
+			const_iterator	it = begin();
+			const_iterator	itEnd = end();
+
+			while (it != itEnd)
+			{
+				if (!kc(it->first, key))
+					return (it);
+				++it;
+			}
+		}
+
+		iterator	upper_bound(const Key& key)
+		{
+			iterator	it = begin();
+			iterator	itEnd = end();
+
+			while (it != itEnd)
+			{
+				if (kc(key, it->first))
+					return (it);
+				++it;
+			}
+			return (it);
+		}
+		const_iterator	upper_bound(const Key& key) const
+		{
+			const_iterator	it = begin();
+			const_iterator	itEnd = end();
+
+			while (it != itEnd)
+			{
+				if (kc(key, it->first))
+					return (it);
+				++it;
+			}
+			return (it);
+		}
 	};
 }
 

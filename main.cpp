@@ -6,7 +6,7 @@
 /*   By: tnguyen- <tnguyen-@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 11:08:59 by tnguyen-          #+#    #+#             */
-/*   Updated: 2023/02/21 08:57:52 by tnguyen-         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:30:17 by tnguyen-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #define RESET   "\033[0m"		/* Reset */
 #define BLUE    "\033[34m"      /* Blue */
 #define CYAN    "\033[36m"      /* Cyan */
-#define RED     "\033[31m" 
-#define GREEN   "\033[32m"
+#define RED     "\033[31m"		/* Red */
+#define GREEN   "\033[32m"		/* Green */
 
 int main()
 {
@@ -213,6 +213,7 @@ int main()
 	std::cout << std::endl;
 
 	{
+		//Default constructor
 		std::cout << RED << "CONSTRUCTORS" << RESET << std::endl;
 		ft::map<int, std::string>	Users;
 		std::cout << GREEN << "Default constructor" << RESET << std::endl;
@@ -232,6 +233,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Copy constructor
 		ft::map<int, std::string>	Users2(Users);
 		std::cout << GREEN << "Copy constructor" << RESET << std::endl;
 		ft::map<int, std::string>::iterator	Beg2 = Users2.begin();
@@ -243,6 +245,7 @@ int main()
 		Beg2++;
 		Beg2++;
 		
+		//Iterator constructor
 		std::cout << std::endl;
 		std::cout << GREEN << "Iterator constructor" << RESET << std::endl;
 		ft::map<int, std::string>	Users3(Beg2, End2);
@@ -254,6 +257,7 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Operator=
 		std::cout << GREEN << "Operator= test" << RESET << std::endl;
 		Users3 = Users2;
 		Beg3 = Users3.begin();
@@ -262,6 +266,8 @@ int main()
 			std::cout << BLUE << "Users3: " << RESET << Beg3->first << " | " << Beg3->second << std::endl;
 			
 		std::cout << std::endl;
+		
+		//Get_allocator
 		std::cout << GREEN << "Get_allocator test" << RESET << std::endl;
 		ft::map<int, std::string>::allocator_type	alloc = Users3.get_allocator();
 		std::cout << GREEN << "No crash, you passed the test" << RESET << std::endl;
@@ -270,10 +276,14 @@ int main()
 		std::cout << RED << "Element access" << RESET << std::endl;
 		
 		std::cout << std::endl;
+		
+		//Operator[]
 		std::cout << GREEN << "Operator[] test" << RESET << std::endl;
 		std::cout << BLUE << Users3[42] << RESET << std::endl;
 
 		std::cout << std::endl;
+		
+		//Operator[]
 		std::cout << GREEN << "Operator[] test" << RESET << std::endl;
 		Users3[42] = "42bis";
 		std::cout << BLUE << Users3[42] << RESET << std::endl;
@@ -288,12 +298,14 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Begin
 		std::cout << GREEN << "Begin test" << RESET << std::endl;
 		ft::map<int, std::string>::iterator	Begin = Users3.begin();
 		std::cout << BLUE << "Begin: " << RESET << Begin->first << " | " << Begin->second << std::endl;
 		
 		std::cout << std::endl;
 		
+		//End
 		std::cout << GREEN << "End test" << RESET << std::endl;
 		ft::map<int, std::string>::iterator	End4 = Users3.end();
 		End4--;
@@ -301,12 +313,14 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Rbegin
 		std::cout << GREEN << "Rbegin test" << RESET << std::endl;
 		ft::map<int, std::string>::reverse_iterator	RBegin = Users3.rbegin();
 		std::cout << BLUE << "RBegin: " << RESET << RBegin->first << " | " << RBegin->second << std::endl;
 		
 		std::cout << std::endl;
 
+		//Rend
 		std::cout << GREEN << "Rend test" << RESET << std::endl;
 		ft::map<int, std::string>::reverse_iterator	REnd = Users3.rend();
 		REnd--;
@@ -324,12 +338,14 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Empty
 		std::cout << GREEN << "Empty test" << RESET << std::endl;
 		ft::map<int, std::string>	Users;
 		std::cout << BLUE << "Empty: " << RESET << Users.empty() << std::endl;
 		
 		std::cout << std::endl;
 
+		//Size
 		std::cout << GREEN << "Size test" << RESET << std::endl;
 		
 		Users.insert(ft::make_pair(0, "toto"));
@@ -344,6 +360,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Max_size
 		std::cout << GREEN << "Max_size test" << RESET << std::endl;
 		std::cout << BLUE << "Max_size: " << RESET << Users.max_size() << std::endl;
 	}
@@ -359,6 +376,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Insert
 		std::cout << GREEN << "Insert test" << RESET << std::endl;
 		
 		ft::map<int, std::string>	Users;
@@ -380,6 +398,7 @@ int main()
 			
 		std::cout << std::endl;
 
+		//Erase
 		std::cout << GREEN << "Erase test" << RESET << std::endl;
 		Users.erase(Users.begin());
 		Beg = Users.begin();
@@ -392,6 +411,7 @@ int main()
 			
 		std::cout << std::endl;
 
+		//Swap
 		std::cout << GREEN << "Swap test" << RESET << std::endl;
 		ft::map<int, std::string>	Users2;
 		Users2.insert(ft::make_pair(0, "toto"));
@@ -419,6 +439,7 @@ int main()
 			
 		std::cout << std::endl;
 		
+		//Clear
 		std::cout << GREEN << "Clear test" << RESET << std::endl;
 		Users.clear();
 		Users2.clear();
@@ -440,6 +461,7 @@ int main()
 
 		std::cout << std::endl;
 		
+		//Key_comp
 		std::cout << GREEN << "Key_comp test" << RESET << std::endl;
 		ft::map<int, std::string>	Users;
 		Users.insert(ft::make_pair(0, "toto"));
@@ -460,6 +482,7 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Value_comp
 		std::cout << GREEN << "Value_comp test" << RESET << std::endl;
 		ft::map<int, std::string>::value_compare	comp2 = Users.value_comp();
 		ft::map<int, std::string>::iterator		Beg2 = Users2.begin();
@@ -469,6 +492,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Find
 		std::cout << GREEN << "Find test" << RESET << std::endl;
 		ft::map<int, std::string>::iterator		it = Users.find(42);
 		ft::map<int, std::string>::iterator		it2 = Users.find(404);
@@ -480,6 +504,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Count
 		std::cout << GREEN << "Count test" << RESET << std::endl;
 		std::cout << BLUE << "Users: " << RESET << Users.count(42) << std::endl;
 		std::cout << BLUE << "Users: " << RESET << Users.count(404) << std::endl;
@@ -487,6 +512,7 @@ int main()
 		
 		std::cout << std::endl;
 
+		//Lower_bound
 		std::cout << GREEN << "Lower_bound test" << RESET << std::endl;
 		ft::map<int, std::string>::iterator		it4 = Users.lower_bound(42);
 		
@@ -494,6 +520,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Upper_bound
 		std::cout << GREEN << "Upper_bound test" << RESET << std::endl;
 		ft::map<int, std::string>::iterator		it5 = Users.upper_bound(42);
 
@@ -501,6 +528,7 @@ int main()
 		
 		std::cout << std::endl;
 		
+		//Equal_range
 		std::cout << GREEN << "Equal_range test" << RESET << std::endl;
 		ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator>	ret;
 		ret = Users.equal_range(42);
